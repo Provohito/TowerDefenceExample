@@ -12,6 +12,8 @@ public class GameBoard : MonoBehaviour
 
     private GameTile[] _tiles;
 
+    private Queue<GameTile> _searchFrontier = new Queue<GameTile>();
+
     public void Inialize(Vector2Int size)
     {
         _size = size;
@@ -27,7 +29,64 @@ public class GameBoard : MonoBehaviour
                 GameTile tile = _tiles[i] =  Instantiate(_tilePrefab);
                 tile.transform.SetParent(transform, false);
                 tile.transform.localPosition = new Vector3(x - offset.x, 0f,  y - offset.y);
+
+                if (x > 0)
+                {
+                    GameTile.MakeEastWestNeighbors(tile, _tiles[i - 1]);
+                }
+
+                if (y > 0)
+                {
+                    GameTile.MakeNorthSouthNeighbors(tile, _tiles[i - size.x]);
+                }
+
+                tile.IsAlternative = (x & 1) == 0;
+                if ((y & 1) == 0)
+                {
+                    tile.IsAlternative = !tile.IsAlternative;
+                }
             }
+        }
+        FindPath();
+    }
+
+    public void FindPath()
+    {
+        foreach (var tile in _tiles)
+        {
+            tile.ClearPath();
+        }
+
+        int destinationImdex = _tiles.Length / 2;
+        _tiles[destinationImdex].BecomeDestination();
+        _searchFrontier.Enqueue(_tiles[destinationImdex]);
+
+        while (_searchFrontier.Count > 0)
+        {
+            GameTile tile = _searchFrontier.Dequeue();
+            if (tile != null)
+            {
+                if (tile.IsAlternative)
+                {
+                    _searchFrontier.Enqueue(tile.GrowPathNotrh());
+                    _searchFrontier.Enqueue(tile.GrowPathSouth());
+                    _searchFrontier.Enqueue(tile.GrowPathEast());
+                    _searchFrontier.Enqueue(tile.GrowPathWest());
+                }
+                else
+                { 
+                    _searchFrontier.Enqueue(tile.GrowPathWest());
+                    _searchFrontier.Enqueue(tile.GrowPathEast());
+                    _searchFrontier.Enqueue(tile.GrowPathSouth());
+                    _searchFrontier.Enqueue(tile.GrowPathNotrh());
+                }
+
+            }
+        }
+
+        foreach (var t in _tiles)
+        {
+            t.ShowPath();
         }
     }
 }
