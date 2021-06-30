@@ -89,4 +89,21 @@ public class GameBoard : MonoBehaviour
             t.ShowPath();
         }
     }
+
+    // Обнаружение клетки
+    public GameTile GetTile(Ray ray)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            int x = (int)(hit.point.x + _size.x * 0.5f);
+            int y = (int)(hit.point.z + _size.y * 0.5f);
+            //Преобразование точки в индекс точки в материи
+            if (x >= 0 && x < _size.x && y >= 0 && y < _size.y)
+                return _tiles[x + y * _size.x];
+            
+        }
+
+        return null;
+    }
 }
