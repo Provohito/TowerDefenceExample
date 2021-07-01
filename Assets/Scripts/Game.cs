@@ -16,19 +16,32 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        _board.Inialize(_boardSize);
+        _board.Inialize(_boardSize, _contentFactory);
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
+        {
             HandleTouch();
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            HandleAlternativeTouch();
+        }
     }
 
     private void HandleTouch()
     {
         GameTile tile = _board.GetTile(TouchRay);
         if (tile != null)
-            tile.Content = _contentFactory.Get(GameTileContentType.Destination);
+            _board.ToggleWall(tile);
+    }
+
+    private void HandleAlternativeTouch()
+    {
+        GameTile tile = _board.GetTile(TouchRay);
+        if (tile != null)
+            _board.ToggleDestination(tile);
     }
 }

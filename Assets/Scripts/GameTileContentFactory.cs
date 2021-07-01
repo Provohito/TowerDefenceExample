@@ -10,12 +10,15 @@ public class GameTileContentFactory : ScriptableObject
 
     [SerializeField] private GameTileContent _emptyPrefab;
 
+    [SerializeField] private GameTileContent _wallPrefab;
+
+
     public void Reclaim(GameTileContent content)
     {
         Destroy(content.gameObject);
     }
 
-    public GameTileContent Get(GameTileContentType type)
+    public GameTileContent Get(GameTileContentType type) // Получение типа контента, для последующей установки
     {
         switch (type)
         {
@@ -23,6 +26,8 @@ public class GameTileContentFactory : ScriptableObject
                 return Get(_destinationPrefab);
             case GameTileContentType.Empty:
                 return Get(_emptyPrefab);
+            case GameTileContentType.Wall:
+                return Get(_wallPrefab);
 
         }
         return null;
