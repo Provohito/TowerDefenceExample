@@ -16,6 +16,10 @@ public class GameBoard : MonoBehaviour
 
     private GameTileContentFactory _contentFactory;
 
+    private List<GameTile> _spawnPoints = new List<GameTile>();
+
+    public int SpawnPointCount => _spawnPoints.Count;
+
     public void Inialize(Vector2Int size, GameTileContentFactory contentFactory )
     {
         _size = size;
@@ -53,6 +57,7 @@ public class GameBoard : MonoBehaviour
             }
         }
         ToggleDestination(_tiles[_tiles.Length / 2]);
+        ToggleSpawnPoint(_tiles[0]);
     }
 
     public bool FindPath()
@@ -146,6 +151,23 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    public void ToggleSpawnPoint(GameTile tile) // Работа с SpawnPoints
+    {
+        if (tile.Content.Type == GameTileContentType.SpawnPoint)
+        {
+            if (_spawnPoints.Count > 1)
+            {
+                _spawnPoints.Remove(tile);
+                tile.Content = _contentFactory.Get(GameTileContentType.Empty);
+            }
+        }
+        else if (tile.Content.Type == GameTileContentType.Empty)
+        {
+            tile.Content = _contentFactory.Get(GameTileContentType.SpawnPoint);
+            _spawnPoints.Add(tile);
+        }
+    }
+
     // Обнаружение клетки
     public GameTile GetTile(Ray ray)
     {
@@ -161,5 +183,10 @@ public class GameBoard : MonoBehaviour
         }
 
         return null;
+    }
+
+    public GameTile GetSpawnPoint(int index)
+    {
+        return _spawnPoints[index];
     }
 }

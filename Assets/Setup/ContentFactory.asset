@@ -15,3 +15,4 @@ MonoBehaviour:
   _destinationPrefab: {fileID: 7559647544808286484, guid: 17a12380610cc334682ed713ca984b64, type: 3}
   _emptyPrefab: {fileID: 97917002270885754, guid: c7256a40f0cb52c49833cd600e5aa066, type: 3}
   _wallPrefab: {fileID: 6078004729796683020, guid: 593f4419309e9f047b72ba8f8932b0ff, type: 3}
+  _spawnPrefab: {fileID: 3196411904219420236, guid: d4242e85568eb1a46a52ad46d61820fc, type: 3}
