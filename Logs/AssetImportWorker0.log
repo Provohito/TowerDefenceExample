@@ -513,3 +513,4 @@ Received Import Request.
 Start importing Assets/Setup/EnemyFactory.asset using Guid(6df10cd1dc587414b84bcce98c29df4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5663eb1c74ca91ee4cc43b960d1e9fbc') in 0.011996 seconds
   Import took 0.014744 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

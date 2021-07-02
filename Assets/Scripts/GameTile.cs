@@ -104,11 +104,5 @@ public class GameTile : MonoBehaviour
     }
 
     // Ќаправлени€ дл€ лица врага, куда будет смотреть
-    public enum Direction
-    {
-        North,
-        East, 
-        South, 
-        West
-    }
+    
 }
