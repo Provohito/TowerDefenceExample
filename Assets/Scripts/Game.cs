@@ -12,6 +12,14 @@ public class Game : MonoBehaviour
 
     [SerializeField] private GameTileContentFactory _contentFactory;
 
+    [SerializeField] EnemyFactory _enemyFactory;
+    [SerializeField, Range(0.1f, 10f)]
+    private float _spawnSpeed;
+
+    private float _spawnProgress;
+
+    private EnemyCollection _enemies = new EnemyCollection();
+
     private Ray TouchRay => _camera.ScreenPointToRay(Input.mousePosition);
 
     private void Start()
@@ -29,6 +37,22 @@ public class Game : MonoBehaviour
         {
             HandleAlternativeTouch();
         }
+
+        _spawnProgress += _spawnSpeed * Time.deltaTime;
+        while (_spawnProgress >= 1f)
+        {
+            _spawnProgress -= 1f;
+            SpawnEnemy();
+        }
+        _enemies.GameUpdate();// Обновление коллекции врагов
+    }
+
+    private void SpawnEnemy()
+    {
+        GameTile spawnPoint = _board.GetSpawnPoint(Random.Range(0, _board.SpawnPointCount)); // Случайная точка для спавна
+        Enemy enemy = _enemyFactory.Get();
+        enemy.SpawnOn(spawnPoint);
+        _enemies.Add(enemy);
     }
 
     private void HandleTouch()
