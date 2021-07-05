@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static DirectionExtention;
 
 public class GameTile : MonoBehaviour
 {
@@ -77,15 +78,15 @@ public class GameTile : MonoBehaviour
 
         neighbor._distance = _distance + 1;
         neighbor._nextOnPath = this;
-        neighbor.ExitPoint = (neighbor.transform.localPosition + transform.localPosition) * 0.5f; // ”среднение позиции, дл€ плавного движени€ врагов
+        neighbor.ExitPoint = neighbor.transform.localPosition + direction.GetHalfVector(); // ”среднение позиции, дл€ плавного движени€ врагов
         neighbor.PathDirection = direction;
         return neighbor.Content.Type != GameTileContentType.Wall ? neighbor : null;
     }
 
-    public GameTile GrowPathNotrh() => GrowPathTo(_north, Direction.North);
-    public GameTile GrowPathEast() => GrowPathTo(_east, Direction.East);
-    public GameTile GrowPathSouth() => GrowPathTo(_south, Direction.South);
-    public GameTile GrowPathWest() => GrowPathTo(_west, Direction.West);
+    public GameTile GrowPathNotrh() => GrowPathTo(_north, Direction.South);
+    public GameTile GrowPathEast() => GrowPathTo(_east, Direction.West);
+    public GameTile GrowPathSouth() => GrowPathTo(_south, Direction.North);
+    public GameTile GrowPathWest() => GrowPathTo(_west, Direction.East);
 
     public void ShowPath()
     {
